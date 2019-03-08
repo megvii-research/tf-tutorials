@@ -7,7 +7,7 @@ https://github.com/PeiqinSun/tf-tutorials/blob/master/01-svhn/Homework%201.md
 - 上交内容:
     - 作业报告(.pdf文件), 最好采用英文+Latex
     - baseline工程代码（如果使用Peiqin的repo则不用交），即一个conv pool，l2 regularization的网络。
-    - 各个问题产生的`diff -u`文件 （见 [Homework instructions.md](Homework instructions.md)）。比如第一次作业Q1的答案源代码，应该以q1.1.diff q1.2.diff等多个.diff文件的形式保存。
+    - 各个问题产生的`diff -u`文件 （见 [Homework instructions.md](Homework instructions.md) ）。比如第一次作业Q1的答案源代码，应该以q1.1.diff q1.2.diff等多个.diff文件的形式保存。
 - 上交格式及步骤:
     - 将上交内容打成一个`tar`包, 命名为 作业编号+学号.tar; e.g. 01_350280101.tar
     - 登录作业上交网站（另行通知）
