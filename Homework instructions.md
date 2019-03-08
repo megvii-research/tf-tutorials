@@ -1,4 +1,4 @@
-The turns should be produced by `diff -u` commands.
+The turn-in's should be produced by `diff -u` commands.
 
 ```
 zsc@suspicious-heyrovsky /unsullied/sharefs/zsc/isilon-share/zsc-awesome-neupeak/tutorial/config
