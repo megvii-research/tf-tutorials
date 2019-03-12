@@ -44,7 +44,7 @@ def main():
 
     ## build graph
     network = Model()
-    placeholders, label_onehot, logits = network.bulid()
+    placeholders, label_onehot, logits = network.build()
 
     if args.loss == 'softmax':
         preds = tf.nn.softmax(logits)

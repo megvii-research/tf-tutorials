@@ -61,7 +61,7 @@ class Model():
     #    x = tf.nn.softmax(inp, name=name)
     #    return x
 
-    def bulid(self):
+    def build(self):
         data = tf.placeholder(tf.float32, shape=(None,)+config.image_shape+(config.nr_channel,),
                               name='data')
         label = tf.placeholder(tf.int32, shape=(None,), name='label')
