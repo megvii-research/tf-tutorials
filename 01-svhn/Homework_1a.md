@@ -12,15 +12,19 @@
   - a. Feed all the data from train32x32.mat.
   - b. Feed 30000 images from train32x32.mat.
   - c. Feed 10000 images from train32x32.mat.
+  
   **_Submit your code in q1.a.diff q1.b.diff and q1.c.diff respectively._**
    
 - #### Q2: How the distribution of data affects test accuracy?
    - Reduce the size of training data in the following ways, 
      - reduce the amount of images labelled with'8' '9' and '0' to 500 and get Dataset A
+
        cnt = [500, 13861, 10585, 8497, 7458, 6882, 5727, 5595, 500, 500]
      - reduce the amount of images labelled with '6', '7', '8','9' and '0' to 1000 and get Dataset B
+
        cnt = [1000, 13861, 10585, 8497, 7458, 6882, 1000, 1000, 1000, 1000]
      - reduce the amount of images labelled with '1','2','3','4'and '5' to 6000 and get Dataset C
+
        cnt = [4948, 6000, 6000, 6000, 6000, 6000, 5727, 5595, 5045, 4659]
 
   - Rerun the classification task with Dataset A, Dataset B and Dataset C respectively. Compare your results with those from Q1.a.
