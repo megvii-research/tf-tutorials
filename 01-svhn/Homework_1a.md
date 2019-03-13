@@ -34,10 +34,10 @@
     _Note_: You might need to shuffle the data after contructing the datasets to maintain the distribution for experiments with subsets from these datasets.
   - Rerun the classification task with 30000 images from Dataset A,  Dataset B and Dataset C respectively. Compare your results with those from Q1.b.
     
-   **_Submit your code in q2.{dataset_index}.{dataset_size}.diff, e.g. q2.a.30000.diff if you get 30000 images from Dataset A._**
+    **_Submit your code in q2.{dataset_index}.{dataset_size}.diff, e.g. q2.a.30000.diff if you get 30000 images from Dataset A._**
   - Rerun the classification task with 10000 images from Dataset A,  Dataset B and Dataset C respectively. Compare your results with those from Q1.c.
    
-  **_Submit your code in q2.{dataset_index}.{dataset_size}.diff, e.g. q2.b.10000.diff, respectively._**
+   **_Submit your code in q2.{dataset_index}.{dataset_size}.diff, e.g. q2.b.10000.diff, respectively._**
 - #### Q3: How augmentation helps when training dataset is small?
    - Implement some of the augmentation techniques described below.
       * a. color inversion: sets a pixel value from v to 255-v. 
