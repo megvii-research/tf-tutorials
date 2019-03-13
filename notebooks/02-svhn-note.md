@@ -151,7 +151,7 @@ imggrid = cv2.cvtColor(imggrid.astype('uint8'), cv2.COLOR_BGR2RGB)
 tensorflow属于符号式编程, 其需要先定义一个compute graph, graph描述了各个tensor之间的相互关系以及operators, 然后再将定义好的graph进行编译, 利用session进行run. 在run的过程当中, graph不会发生改变。所以, 大家一定要形成一个意识: graph的定义和计算是分隔开的。下面, 先关注how to build a graph。为了后续和我们提供的检查工具tf-model-manip.py进行配合, **强烈推荐**大家按照01-svhn的工程架构进行后续代码的书写。即在工程代码中创建一个model.py文件, 内含一个Model class, 在Model class中有一个method: build.
 
 ---
-在\_\_init\__函数中指定param使用的初始化方式(这里使用MSRA初始化方式, 感兴趣可以查看 https://arxiv.org/pdf/1502.01852.pdf)。简单而言, 就是一个均值为0的正态分布, 其方差由输入神经元个数决定。也可以通过修改mode来进行修改方差的计算方式。
+在\_\_init\_\_函数中指定param使用的初始化方式(这里使用MSRA初始化方式, 感兴趣可以查看 https://arxiv.org/pdf/1502.01852.pdf\)。简单而言, 就是一个均值为0的正态分布, 其方差由输入神经元个数决定。也可以通过修改mode来进行修改方差的计算方式。
 ```python
 def __init__(self):
         self.weight_init = tf_contrib.layers.variance_scaling_initializer(factor=1.0,
