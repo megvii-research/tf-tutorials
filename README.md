@@ -7,6 +7,9 @@
   1. a python file called model.py
   2. a class called **Model** with a **build** method in model.py
 
+#### Docker-materials
+- A folder includes some files to help you create a docker for experiments.
+
 #### Note
 - If this is your first time doing homeworks, please create a docker first. You can read Docker.md for more informations.
 
