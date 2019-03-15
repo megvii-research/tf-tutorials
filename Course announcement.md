@@ -10,7 +10,7 @@ https://github.com/PeiqinSun/tf-tutorials/blob/master/01-svhn/Homework%201.md
     - 各个问题产生的`diff -u`文件 （见 https://github.com/PeiqinSun/tf-tutorials/blob/master/Homework%20instructions.md ）。比如第一次作业Q1的答案源代码，应该以q1.1.diff q1.2.diff等多个.diff文件的形式保存。
 - 上交格式及步骤:
     - 将上交内容打成一个`tar`包, 命名为 作业编号+学号.tar; e.g. 01_350280101.tar
-    - 登录作业上交网站（另行通知）
+    - 登录作业上交网站: http://39.104.61.196:8000/
     - 选中对应的tar包upload到服务器。
 - 评分标准
     - 作业评分根据diff文件的文件大小（达到实验目的条件下越少越好，但要保持可读性）；以及实验结果是否正确。
