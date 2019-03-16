@@ -13,3 +13,6 @@
 #### Note
 - If this is your first time doing homeworks, please create a docker first. You can read Docker.md for more informations.
 
+### Course slides
+https://github.com/zsc/megvii-pku-dl-course/tree/master/slides19
+
