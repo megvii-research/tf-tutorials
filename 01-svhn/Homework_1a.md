@@ -57,3 +57,20 @@
     - Apply mixup technique when you feed all/30000/10000 images from train32x32.mat in the classification tasks and see whether the test accuracy increases compared with that from Q1.
       
       **_Submit your code in q4.{dataset-size}.diff, e.g. q4.all.diff or q4.10000.diff._**
+
+## Summary of diff file
+
+
+|Task | File name|
+|:---:|:---:| 
+|Q1|q1.a.diff q1.b.diff q1.c.diff
+|Q2|q2.a.diff q2.b.diff q2.c.diff 
+|| q2.a.30000.diff q2.b.30000.diff q2.c.30000.diff
+||   q2.a.10000.diff q2.b.10000.diff q2.c.10000.diff
+|Q3| q3.a.all.diff    q3.b.all.diff  q3.c.all.diff 
+||   q3.a.30000.diff  q3.b.30000.diff  q3.c.30000.diff 
+ ||  q3.a.10000.diff  q3.b.10000.diff  q3.c.10000.diff
+||(Optional)q3.o1.diff q3.o2.diff
+|Q4|q4.all.diff q4.30000.diff q4.10000.diff
+
+
