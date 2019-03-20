@@ -26,7 +26,7 @@ Check the stored images and find out how well this image approximates the target
     where i,j denotes row and column index of a pixel in the image.
 Total variation loss encourages images to be made up of piece-wise constant patches. 
 Add total variation loss in the loss term and compare the generated images with that in Q1. 
-     
+   _Note_: You might average the total variation before adding it in the loss term. 
    **_Submit your code in q2.1.diff._**
   - Increase the portion of total variation loss in the loss term and rerun the training process.
    
