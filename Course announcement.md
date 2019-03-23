@@ -15,6 +15,7 @@ https://github.com/PeiqinSun/tf-tutorials/blob/master/01-svhn/Homework%201.md
 - 评分标准
     - 作业评分根据diff文件的文件大小（达到实验目的条件下越少越好，但要保持可读性）；以及实验结果是否正确。
     - 作业严禁抄袭。
+    - 讲评后提交最高分只有90分，最终成绩为第一次提交、第二次提交的高者
 
 ## 大作业
 - 第7周组队+选定指导老师，第11周present
