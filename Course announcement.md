@@ -21,5 +21,15 @@ https://github.com/PeiqinSun/tf-tutorials/blob/master/01-svhn/Homework%201.md
 - 第7周组队+选定指导老师，第11周present
 - 每队不超过3人
 
+## GPU servers
+- We provide some servers, each server has eight Nvidia GPU for students to do all the experiments.
+- **python** and **tensorflow** has already been installed.
+- Some lucky guys will get a IP address and a port number to log in a docker on servers.
+- You can read Docker.md for more information.
+
+### Warnings
+- **Do not use the computation resource for your private project!!**
+- **Do not let anyone who has not selected this course know the username and password of your docker!!**
+
 ## External links
 For quick introduction to Python, can try https://www.learnpython.org/
