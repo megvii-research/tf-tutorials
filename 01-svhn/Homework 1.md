@@ -23,16 +23,6 @@ A: You can choose to skip extra\_32x32.mat when trainining. Find a file called c
 #### Q: Where to find dataset files?
 A: Open http://ufldl.stanford.edu/housenumbers . Please download format2 data. (train\_32x32.mat, test\_32x32.mat, extra\_32x32.mat)
 
-## GPU servers
-- We provide some servers, each server has eight Nvidia GPU for students to do all the experiments.
-- **python** and **tensorflow** has already been installed.
-- Everyone will be assign a IP address and a port number to log in a docker on servers.
-- You can read Docker.md for more information.
-
-## Warnings
-- **Do not use the computation resource for your private project!!**
-- **Do not let anyone who has not selected this course know the username and password of your docker!!**
-
 ## Questions
 - #### Q1: Finding alternatives of softmax
 **(Should be named as q1.1.diff q1.2.diff q1.3.diff q1.4.diff)**
