@@ -16,3 +16,14 @@
 ### Course slides
 https://github.com/zsc/megvii-pku-dl-course/tree/master/slides19
 
+### GPU servers
+- We provide some servers, each server has eight Nvidia GPU for students to do all the experiments.
+- **python** and **tensorflow** has already been installed.
+- Some lucky guys will get a IP address and a port number to log in a docker on servers.
+- You can read Docker.md for more information.
+
+#### Warnings
+- **Do not use the computation resource for your private project!!**
+- **Do not let anyone who has not selected this course know the username and password of your docker!!**
+
+
