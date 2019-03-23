@@ -1,12 +1,18 @@
 ## CPU version
 
 ### 1. Install docker-ce
-We provide a bash file to help install docker-ce on ubuntu16.04. For other OS, please google by yourself.
+For OS other than below, please google by yourself.
+
+#### Ubuntu 16.04
+We provide a bash file to help install docker-ce. 
 ```bash
 git clone https://github.com/PeiqinSun/tf-tutorials
 cd ./tf-tutorials/Docker-materials 
 bash install-docker-ce.sh
 ```
+
+#### Mac OS
+https://stackoverflow.com/questions/40112083/can-i-use-docker-for-installing-ubuntu-on-a-mac
 
 ### 2. Pull base image
 ```bash
