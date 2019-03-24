@@ -3,88 +3,66 @@
 # =======================================
 # File Name : dataset.py
 # Purpose : generate samples for train and test
-# Creation Date : 2019-02-19 10:35
+# Creation Date : 2019-03-24 10:35
 # Last Modified :
-# Created By : sunpeiqin
+# Created By : niuyazhe
 # =======================================
 
 import os
-import cv2
+import torch
 import numpy as np
+from PIL import Image
 from scipy import io as scio
+from torch.utils.data import Dataset
+from torchvision import transforms
 
 from common import config
 
-class Dataset():
-    #dataset_path = '../../dataset/SVHN'
-    dataset_path = '/root/dataset/SVHN'
-
-
-    def __init__(self, dataset_name):
-        self.minibatch_size = config.minibatch_size
-        self.ds_name = dataset_name
-        if config.use_extra_data:
-            train_meta = ([os.path.join(self.dataset_path, 'train_32x32.mat'),
-                           os.path.join(self.dataset_path, 'extra_32x32.mat')], 604388)
+class SvhnDataset(Dataset):
+    def __init__(self, root, train, transform=None):
+        self.root = root
+        if train:
+            self.data = [os.path.join(root, 'train_32x32.mat')]
+            if not config.use_extra_data:
+                self.data.append(os.path.join(root, 'extra_32x32.mat'))
         else:
-            train_meta = ([os.path.join(self.dataset_path, 'train_32x32.mat')], 73257)
+            self.data = ([os.path.join(root, 'test_32x32.at')])
 
-        dataset_meta = {
-            'train': train_meta,
-            'test': ([os.path.join(self.dataset_path, 'test_32x32.mat')], 26032),
-        }
-        self.files, self.instances = dataset_meta[dataset_name]
-
-    def load(self):
-        datas_list, labels_list = [], []
-        for f in self.files:
+        self.datas_list, self.labels_list = [], []
+        for f in self.data:
             samples = scio.loadmat(f)
-            datas_list.append(samples['X'])
-            labels_list.append(samples['y'])
-        datas = np.concatenate(datas_list, axis=3)
-        labels = np.concatenate(labels_list, axis=0)
-        self.samples_mat = {
-            'X': datas,
-            'Y': labels,
-        }
-        return self
+            self.datas_list.append(samples['X'])
+            self.labels_list.append(samples['y'])
+        self.datas_np = np.concatenate(self.datas_list, axis=3)
+        self.datas_np = self.datas_np.transpose(3,0,1,2)
+        self.labels_np = np.concatenate(self.labels_list, axis=1)
+        self.labels_np = self.labels_np.transpose(1,0)
 
-    @property
-    def instances_per_epoch(self):
-        return self.instances
+        if transform is None:
+            raise ValueError
+        else:
+            self.transform = transform
 
-    @property
-    def minibatchs_per_epoch(self):
-        return self.instances // config.minibatch_size
+    def __getitem__(self, index):
+        img = self.datas_np[index]
+        label = self.labels_np[index]
+        if label[0] == 10:
+            print('???')
+        img = self.transform(Image.fromarray(np.uint8(img)))
+        return img.float(), torch.from_numpy(label).long()
 
-    def instance_generator(self):
-        for i in range(self.instances):
-            img = self.samples_mat['X'][:, :, :, i]
-            label = self.samples_mat['Y'][i, :][0]
-            if label == 10:
-                label = 0
-            img = cv2.resize(img, config.image_shape)
-            yield img.astype(np.float32), np.array(label, dtype=np.int32)
+
+    def __len__(self):
+        return len(self.labels_list)
 
 
 if __name__ == "__main__":
-    ds = Dataset('train')
-    ds = ds.load()
-    gen = ds.instance_generator()
-
-    imggrid = []
-    while True:
-        for i in range(25):
-            img, label = next(gen)
-            cv2.putText(img, str(label), (0, config.image_shape[0]), cv2.FONT_HERSHEY_SIMPLEX,
-                        1, (0, 255, 0), 2)
-            imggrid.append(img)
-
-        imggrid = np.array(imggrid).reshape((5, 5, img.shape[0], img.shape[1], img.shape[2]))
-        imggrid = imggrid.transpose((0, 2, 1, 3, 4)).reshape((5*img.shape[0], 5*img.shape[1], 3))
-        cv2.imshow('', imggrid.astype('uint8'))
-        c = chr(cv2.waitKey(0) & 0xff)
-        if c == 'q':
-            exit()
-        imggrid = []
-
+    root = '~/data/'
+    transform = transforms.Compose([
+        transforms.ToTensor(),
+        transforms.Normalize(mean=(0.5,0.5,0.5), std=(0.5,0.5,0.5))
+    ])
+    dataset = SvhnDataset(root, train=True, transform=transform)
+    img, label = dataset[0]
+    print(img.shape)
+    print(img.mean())
