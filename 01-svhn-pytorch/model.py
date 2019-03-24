@@ -41,16 +41,19 @@ class LpPool2d(nn.Module):
 
 
 class Model(nn.Module):
-    def __init__(self, in_channels=3, num_classes=10):
+    def __init__(self, in_channels=3, num_classes=10, pool='normal'):
         super(Model, self).__init__()
         self.in_channels = in_channels
         self.num_classes = num_classes
+        self.pool = pool
+        if self.pool != 'normal' and not isinstance(self.pool, numbers.Integral):
+            raise ValueError
         self.build()
-        self.init()
+        #self.init()
 
     def _conv_layer(self, in_channels, out_channels, kernel_size, stride=1, padding=0, bias=True, activation=nn.ReLU(), use_bn=True):
         layers = []
-        layers.append(nn.Conv2d(in_channels, out_channels, stride, padding, bias=bias))
+        layers.append(nn.Conv2d(in_channels, out_channels, kernel_size, stride, padding, bias=bias))
         if use_bn:
             layers.append(nn.BatchNorm2d(out_channels))
         if activation is not None:
@@ -58,14 +61,15 @@ class Model(nn.Module):
         return nn.Sequential(*layers)
 
     def _pool_layer(self, kernel_size, stride, padding=0, mode='MAX'):
+        if isinstance(self.pool, numbers.Integral):
+            return LpPool2d(self.pool, kernel_size, stride, padding)
+
         mode_list = ['MAX', 'AVG']
         assert(mode in mode_list or isinstance(mode, numbers.Integral))
         if mode == 'MAX':
             return nn.MaxPool2d(kernel_size, stride, padding)
         elif mode == 'AVG':
             return nn.AvgPool2d(kernel_size, stride, padding)
-        elif isinstance(mode, numbers.Integral):
-            return LpPool2d(p=mode, kernel_size, stride, padding)
 
     def _fc_layer(self, in_channels, out_channels, dropout=0.5):
         layers = []

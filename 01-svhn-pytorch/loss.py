@@ -6,15 +6,22 @@ import torch.nn.functional as F
 class MaxLoss(nn.Module):
     max_type_list = ['softmax', 'abs-max', 'square-max', 'plus-one-abs-max', 'non-negative-max']
 
-    def __init__(self, max_type, size_average=True):
+    def __init__(self, max_type):
         super(MaxLoss, self).__init__()
         assert max_type in self. max_type_list
         self.max_type = max_type
-        self.NLLLoss = nn.NLLLoss(size_average=size_average)
+        self.NLLLoss = nn.NLLLoss()
+
+    def _onehot(self, x, dim_num):
+        one_hot_code = torch.zeros(x.size()[0], dim_num)
+        one_hot_code.scatter_(1, x, 1)
+        if torch.cuda.is_available():
+            one_hot_code = one_hot_code.cuda()
+        return one_hot_code.long()
 
     def forward(self, inputs, target):
         if self.max_type == 'softmax':
-            pred = F.softmax(inputs)
+            pred = F.softmax(inputs, dim=1)
         elif self.max_type == 'abs-max':
             abs_val = torch.abs(inputs)
             pred = abs_val / torch.sum(abs_val, dim=1, keepdim=True)
@@ -28,6 +35,7 @@ class MaxLoss(nn.Module):
             clamp_val = inputs.clamp(0)
             pred = clamp_val / torch.sum(clamp_val, dim=1, keepdim=True)
 
+        pred = torch.log(pred)
         return self.NLLLoss(pred, target)
 
 

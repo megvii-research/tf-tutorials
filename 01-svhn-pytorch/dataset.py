@@ -18,7 +18,7 @@ from torchvision import transforms
 
 
 class SvhnDataset(Dataset):
-    def __init__(self, root, train, transform=None, use_extra_data=True):
+    def __init__(self, root, train, transform=None, use_extra_data=False):
         self.root = root
         if train:
             self.data = [os.path.join(root, 'train_32x32.mat')]
@@ -44,13 +44,12 @@ class SvhnDataset(Dataset):
     def __getitem__(self, index):
         img = self.datas_np[index]
         label = self.labels_np[index]
-        if label[0] == 10:
-            print('???')
+        label[0] = label[0] % 10
         img = self.transform(Image.fromarray(np.uint8(img)))
         return img.float(), torch.from_numpy(label).long()
 
     def __len__(self):
-        return len(self.labels_list)
+        return self.datas_np.shape[0]
 
 
 if __name__ == "__main__":
