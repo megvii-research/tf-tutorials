@@ -22,6 +22,7 @@ class MaxLoss(nn.Module):
     def forward(self, inputs, target):
         if self.max_type == 'softmax':
             pred = F.softmax(inputs, dim=1)
+            pred = torch.log(pred)
         elif self.max_type == 'abs-max':
             abs_val = torch.abs(inputs)
             pred = abs_val / torch.sum(abs_val, dim=1, keepdim=True)
@@ -33,9 +34,8 @@ class MaxLoss(nn.Module):
             pred = abs_val / torch.sum(abs_val, dim=1, keepdim=True)
         elif self.max_type == 'non-negative-max':
             clamp_val = inputs.clamp(0)
-            pred = clamp_val / torch.sum(clamp_val, dim=1, keepdim=True)
+            pred = clamp_val / (torch.sum(clamp_val, dim=1, keepdim=True) + 1e-8)
 
-        pred = torch.log(pred)
         return self.NLLLoss(pred, target)
 
 
