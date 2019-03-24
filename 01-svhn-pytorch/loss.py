@@ -39,6 +39,23 @@ class MaxLoss(nn.Module):
         return self.NLLLoss(pred, target)
 
 
+class MSELoss(nn.Module):
+    def __init__(self):
+        super(MSELoss, self).__init__()
+        self.mse_loss = nn.MSELoss()
+
+    def _onehot(self, x, dim_num):
+        one_hot_code = torch.zeros(x.size()[0], dim_num)
+        one_hot_code.scatter_(1, x, 1)
+        if torch.cuda.is_available():
+            one_hot_code = one_hot_code.cuda()
+        return one_hot_code.float()
+
+    def forward(self, inputs, target):
+        target = self._onehot(target.unsqueeze(1).cpu(), inputs.size()[1])
+        return self.mse_loss(inputs, target)
+
+
 class LpNorm(nn.Module):
     def __init__(self, p=2, factor=1e-5):
         super(LpNorm, self).__init__()
