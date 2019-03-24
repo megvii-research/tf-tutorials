@@ -16,14 +16,13 @@ from scipy import io as scio
 from torch.utils.data import Dataset
 from torchvision import transforms
 
-from common import config
 
 class SvhnDataset(Dataset):
-    def __init__(self, root, train, transform=None):
+    def __init__(self, root, train, transform=None, use_extra_data=True):
         self.root = root
         if train:
             self.data = [os.path.join(root, 'train_32x32.mat')]
-            if not config.use_extra_data:
+            if not self.use_extra_data:
                 self.data.append(os.path.join(root, 'extra_32x32.mat'))
         else:
             self.data = ([os.path.join(root, 'test_32x32.at')])
@@ -34,9 +33,9 @@ class SvhnDataset(Dataset):
             self.datas_list.append(samples['X'])
             self.labels_list.append(samples['y'])
         self.datas_np = np.concatenate(self.datas_list, axis=3)
-        self.datas_np = self.datas_np.transpose(3,0,1,2)
+        self.datas_np = self.datas_np.transpose(3, 0, 1, 2)
         self.labels_np = np.concatenate(self.labels_list, axis=1)
-        self.labels_np = self.labels_np.transpose(1,0)
+        self.labels_np = self.labels_np.transpose(1, 0)
 
         if transform is None:
             raise ValueError
@@ -51,7 +50,6 @@ class SvhnDataset(Dataset):
         img = self.transform(Image.fromarray(np.uint8(img)))
         return img.float(), torch.from_numpy(label).long()
 
-
     def __len__(self):
         return len(self.labels_list)
 
@@ -60,7 +58,7 @@ if __name__ == "__main__":
     root = '~/data/'
     transform = transforms.Compose([
         transforms.ToTensor(),
-        transforms.Normalize(mean=(0.5,0.5,0.5), std=(0.5,0.5,0.5))
+        transforms.Normalize(mean=(0.5, 0.5, 0.5), std=(0.5, 0.5, 0.5))
     ])
     dataset = SvhnDataset(root, train=True, transform=transform)
     img, label = dataset[0]

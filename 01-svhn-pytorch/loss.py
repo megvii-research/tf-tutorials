@@ -2,8 +2,10 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
+
 class MaxLoss(nn.Module):
     max_type_list = ['softmax', 'abs-max', 'square-max', 'plus-one-abs-max', 'non-negative-max']
+
     def __init__(self, max_type, size_average=True):
         super(MaxLoss, self).__init__()
         assert max_type in self. max_type_list

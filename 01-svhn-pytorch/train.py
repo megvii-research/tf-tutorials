@@ -101,12 +101,14 @@ def main(args):
     scheduler = torch.optim.MultiStepLR(optimizer, args.lr_milestone, gamma=0.1)
 
     transform = transforms.Compose([
-            transforms.ToTensor(),
-        ])
+        transforms.ToTensor(),
+    ])
     train_set = SvhnDataset(root=args.root, train=True, transform=transform)
     test_set = SvhnDataset(root=args.root, train=False, transform=transform)
-    train_loader = DataLoader(train_set, batch_size=args.batch_size, shuffle=True, num_workers=args.num_workers, pin_memory=True)
-    test_loader = DataLoader(test_set, batch_size=args.batch_size, shuffle=False, num_workers=args.num_workers, pin_memory=True)
+    train_loader = DataLoader(train_set, batch_size=args.batch_size, shuffle=True,
+                              num_workers=args.num_workers, pin_memory=True)
+    test_loader = DataLoader(test_set, batch_size=args.batch_size, shuffle=False,
+                             num_workers=args.num_workers, pin_memory=True)
 
     if arg.evaluate:
         test(network_model, test_loader)

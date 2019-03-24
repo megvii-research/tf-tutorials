@@ -12,12 +12,13 @@
 import math
 import torch
 import torch.nn as nn
-from common import config
 
 
 class Model(nn.Module):
-    def __init__(self):
+    def __init__(self, in_channels=3, num_classes=10):
         super(Model, self).__init__()
+        self.in_channels = in_channels
+        self.num_classes = num_classes
         self.build()
         self.init()
 
@@ -62,7 +63,7 @@ class Model(nn.Module):
                 m.bias.data.zero_()
 
     def build(self):
-        self.conv1 = self._conv_layer(config.nr_channel, 16, 3, 1, 1)
+        self.conv1 = self._conv_layer(self.in_channels, 16, 3, 1, 1)
         self.mp1 = self._pool_layer(kernel_size=2, stride=2, mode='MAX')
 
         self.conv21 = self._conv_layer(16, 32, 3, 1, 1)
@@ -77,7 +78,7 @@ class Model(nn.Module):
         self.conv42 = self._conv_layer(128, 128, 3, 1, 1)
         self.ap4 = self._pool_layer(kernel_size=4, stride=4, mode='AVG')
 
-        self.fc1 = self._fc_layer(128, config.nr_class, dropout=0)
+        self.fc1 = self._fc_layer(128, self.num_classes, dropout=0)
 
     def forward(self, x):
         x = self.conv1(x)
