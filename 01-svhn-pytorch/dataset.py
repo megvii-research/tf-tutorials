@@ -22,10 +22,10 @@ class SvhnDataset(Dataset):
         self.root = root
         if train:
             self.data = [os.path.join(root, 'train_32x32.mat')]
-            if not self.use_extra_data:
+            if use_extra_data:
                 self.data.append(os.path.join(root, 'extra_32x32.mat'))
         else:
-            self.data = ([os.path.join(root, 'test_32x32.at')])
+            self.data = [os.path.join(root, 'test_32x32.mat')]
 
         self.datas_list, self.labels_list = [], []
         for f in self.data:
@@ -34,8 +34,7 @@ class SvhnDataset(Dataset):
             self.labels_list.append(samples['y'])
         self.datas_np = np.concatenate(self.datas_list, axis=3)
         self.datas_np = self.datas_np.transpose(3, 0, 1, 2)
-        self.labels_np = np.concatenate(self.labels_list, axis=1)
-        self.labels_np = self.labels_np.transpose(1, 0)
+        self.labels_np = np.concatenate(self.labels_list, axis=0)
 
         if transform is None:
             raise ValueError

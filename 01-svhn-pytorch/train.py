@@ -16,7 +16,7 @@ from torch.utils.data import DataLoader
 from torchvision import transforms
 from dataset import SvhnDataset
 from model import Model
-from loss import Softmax, LpNorm
+from loss import MaxLoss, LpNorm
 
 
 def train(network_model, train_loader, test_loader, optimizer, scheduler, criterion, regularizer, args):
@@ -87,18 +87,20 @@ def main(args):
     if torch.cuda.is_available():
         network_model = network_model.cuda()
 
-    if args.loss == 'softmax':
-        criterion = Softmax()
+    if args.loss == 'L2Loss':
+        criterion = nn.MSELoss()
+    elif args.loss == 'CrossEtropy':
+        criterion = MaxLoss(args.max_type)
     else:
         raise ValueError
 
     if args.lp_norm == None:
         regularizer = None
     else:
-        raise ValueError
+        regularizer = L2Loss(args.lp_norm, args.lp_norm_factor)
 
     optimizer = torch.optim.Adam(network_model.parameters(), lr=args.lr)
-    scheduler = torch.optim.MultiStepLR(optimizer, args.lr_milestone, gamma=0.1)
+    scheduler = torch.optim.lr_scheduler.MultiStepLR(optimizer, args.lr_milestone, gamma=0.1)
 
     transform = transforms.Compose([
         transforms.ToTensor(),
@@ -110,7 +112,7 @@ def main(args):
     test_loader = DataLoader(test_set, batch_size=args.batch_size, shuffle=False,
                              num_workers=args.num_workers, pin_memory=True)
 
-    if arg.evaluate:
+    if args.evaluate:
         test(network_model, test_loader)
         return
 
@@ -119,11 +121,13 @@ def main(args):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument('--root', default='./')
+    #parser.add_argument('--root', default='./')
+    parser.add_argument('--root', default='/mnt/lustre/niuyazhe/data/')
     parser.add_argument('--log_model_dir', default='./train_log')
     parser.add_argument('--batch_size', default=256)
     parser.add_argument('--num_workers', default=4)
-    parser.add_argument('--loss', default=None)
+    parser.add_argument('--loss', default='CrossEtropy')
+    parser.add_argument('--max_type', default='softmax')
     parser.add_argument('--lp_norm', default=None)
     parser.add_argument('--lp_norm_factor', default=1e-5)
     parser.add_argument('--lr', default=0.01)
@@ -131,9 +135,10 @@ if __name__ == "__main__":
     parser.add_argument('--epoch', default=60)
     parser.add_argument('--evaluate', default=False)
     parser.add_argument('--show_interval', default=100)
-    parser.add_argument('--test_interval', default=2)
-    parser.add_argument('--snapshot_interval', default=1)
+    parser.add_argument('--test_interval', default=1)
+    parser.add_argument('--snapshot_interval', default=10)
     args = parser.parse_args()
     if not os.path.exists(args.log_model_dir):
         os.mkdir(args.log_model_dir)
+    print(args)
     main(args)
