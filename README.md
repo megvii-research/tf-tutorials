@@ -6,6 +6,7 @@
 - Requirements: 
   1. a python file called model.py
   2. a class called **Model** with a **build** method in model.py
+  3. Need install `pip3 install python-magic --user` . On MacOS may need `libmagic`.
 
 #### Docker-materials
 - A folder includes some files to help you create a docker for experiments.
