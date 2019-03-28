@@ -18,8 +18,9 @@ https://github.com/PeiqinSun/tf-tutorials/blob/master/01-svhn/Homework%201.md
     - 讲评后提交最高分只有90分，最终成绩为第一次提交、第二次提交的高者
 
 ## 大作业
-- 第7周组队+选定指导老师，第11周present
+- 第6周组队+选定指导老师，第11周present
 - 每队不超过3人
+- 可以和本科课是同一个队同一个topic。如果一样，本科课只present delta部分。
 
 ## GPU servers
 - We provide some servers, each server has eight Nvidia GPU for students to do all the experiments.
