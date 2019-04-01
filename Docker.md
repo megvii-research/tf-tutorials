@@ -3,7 +3,7 @@
 You have to use the Docker to complete all your assignments on servers.
 
 ## Instructions
-- We will assign an IP address and a port number to everyone, then you can log in via ssh. 
+- We will assign an IP address and a port number for lucky ones. They can log in via ssh. 
   e.g. `ssh root@40.104.61.196 -p 8100`
 - The initial password of docker is **root**. The first thing is to update your password when you log in successfully.
 - Run `cd` into your home directory.

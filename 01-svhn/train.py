@@ -19,7 +19,7 @@ from common import config
 def get_dataset_batch(ds_name):
     dataset = Dataset(ds_name)
     ds_gnr = dataset.load().instance_generator
-    ds = tf.data.Dataset().from_generator(ds_gnr, output_types=(tf.float32, tf.int32),)
+    ds = tf.data.Dataset.from_generator(ds_gnr, output_types=(tf.float32, tf.int32),)
     if ds_name == 'train':
         ds = ds.shuffle(dataset.instances_per_epoch)
         ds = ds.repeat(config.nr_epoch)
