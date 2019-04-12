@@ -13,8 +13,6 @@ import math
 import numbers
 import torch
 import torch.nn as nn
-import torch.nn.functional as F
-from generate_gauss import gauss2D
 
 
 class LpPool2d(nn.Module):
@@ -24,20 +22,10 @@ class LpPool2d(nn.Module):
         self.kernel_size = kernel_size
         self.padding = padding
         self.stride = stride
-        if isinstance(p, numbers.Integral) and p > 0:
-            self.gauss_kernel = gauss2D((kernel_size, kernel_size))
-            self.gauss_kernel = torch.from_numpy(self.gauss_kernel).float()
-            if torch.cuda.is_available():
-                self.gauss_kernel = self.gauss_kernel.cuda()
-        else:
-            raise ValueError
+        raise NotImplementedError
 
     def forward(self, x):
-        x_p = torch.pow(x, self.p)
-        weight = self.gauss_kernel.unsqueeze(0).unsqueeze(0).repeat(x_p.size()[1], 1, 1, 1)
-        output = F.conv2d(x_p, weight, stride=self.stride, padding=self.padding, groups=x_p.size()[1])
-        output_1p = torch.pow(output, 1./self.p)
-        return output_1p
+        raise NotImplementedError
 
 
 class Model(nn.Module):
@@ -49,7 +37,7 @@ class Model(nn.Module):
         if self.pool != 'normal' and not isinstance(self.pool, numbers.Integral):
             raise ValueError
         self.build()
-        #self.init()
+        self.init()
 
     def _conv_layer(self, in_channels, out_channels, kernel_size, stride=1, padding=0, bias=True, activation=nn.ReLU(), use_bn=True):
         layers = []
@@ -146,5 +134,5 @@ def test_LpPool2d():
 
 
 if __name__ == "__main__":
-    #test_model()
+    test_model()
     test_LpPool2d()

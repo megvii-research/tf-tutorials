@@ -16,7 +16,7 @@ from torch.utils.data import DataLoader
 from torchvision import transforms
 from dataset import SvhnDataset
 from model import Model
-from loss import MaxLoss, MSELoss, LpNorm
+from loss import MaxLoss
 
 
 def train(network_model, train_loader, test_loader, optimizer, scheduler, criterion, regularizer, args):
@@ -112,7 +112,7 @@ def main(args):
         network_model = network_model.cuda()
 
     if args.loss == 'L2Loss':
-        criterion = MSELoss()
+        raise NotImplementedError
     elif 'CrossEntropy' in args.loss:
         criterion = MaxLoss(args.loss[13:])
     else:
