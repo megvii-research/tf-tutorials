@@ -7,6 +7,9 @@
 - The work has to be finished individually. Plagiarism will be dealt with seriously.
 - In this experiment, we only use data from training data file 'train32x32.mat'. Please always set the "use_extra_data" flag to **False** in common.py.
 
+## Notes
+- The flag **--loss** is not mean to choose a loss function. The right meaning of --loss is a method of preds. It is recommended to read the source code to understand its meaning.
+
 ## Tasks
 - #### Q1: How a smaller dataset affects test accuracy?
   - a. Feed all the data from train32x32.mat.
