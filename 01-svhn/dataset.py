@@ -17,7 +17,7 @@ from common import config
 
 class Dataset():
     #dataset_path = '../../dataset/SVHN'
-    dataset_path = '/root/dataset/SVHN'
+    dataset_path = '/Users/zsc/dataset/SVHN'
 
 
     def __init__(self, dataset_name):
