@@ -20,7 +20,7 @@ In large-scale machine learning applications, we may train a large model(teacher
    - Use softmax with temperature <img src="https://latex.codecogs.com/gif.latex?T&space;\geq&space;1" title="T \geq 1" /> (defined as below) to construct the 'soft' cross entropy loss with target class probabilities generated from the teacher model. Higher value of temperature T produces a softer probability distribution over classes.
 Notice that the target probabilities are also generated using softmax with the same temperature.
 
-       <img src="https://latex.codecogs.com/gif.latex?q_i&space;=&space;\frac{exp(z_i/T)}{\sum_j(z_j/T)}" title="q_i = \frac{exp(z_i/T)}{\sum_j(z_j/T)}" />
+       <img src="https://latex.codecogs.com/gif.latex?q_i&space;=&space;\frac{exp(z_i/T)}{\sum_jexp(z_j/T)}" title="q_i = \frac{exp(z_i/T)}{\sum_jexp(z_j/T)}" />
 
        Here <img src="https://latex.codecogs.com/gif.latex?z_i,&space;T,&space;q_i" title="z_i, T, q_i" />  denotes logits for the ith class, temperature and probability for the ith class, respectively.     
    - Rerun the training process of the quantized model with different temperature. Analyze how temperature influences the distilled model.
