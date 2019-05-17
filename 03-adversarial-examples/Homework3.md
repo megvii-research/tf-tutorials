@@ -29,7 +29,7 @@ Rerun the experiment to see how success rate changes with different c value, e.g
   - Implement one or some of the augmentation techniques, e.g. affine transformation, adding salt and pepper noise, [bluring](https://docs.opencv.org/3.1.0/d4/d13/tutorial_py_filtering.html) etc. on the generated adversarial examples. Evaluate the augmented adversarial examples and find out whether these examples still get misclassified.
     #### Pick up one augmentation or combination that helps and submit your code in q3.diff.
 - #### Q4: Generating targeted adversarial examples
-  - In targeted attack scenario, please assign a target label for each image. After training, the corresponding examples will be classified as this label. You need to modify the loss term and rerun the generating process. You may also increase the number of epochs in each run.
+  - In targeted attack scenario, please assign a target label (just arbitrarily pick one!) for each image. After training, the corresponding examples will be classified as this label. You need to modify the loss term and rerun the generating process. You may also increase the number of epochs in each run.
      #### Submit your code in q4.diff.
 
 
