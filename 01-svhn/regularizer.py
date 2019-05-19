@@ -41,4 +41,4 @@ def lp_regularizer(scale, p=2, scope=None):
       reg_loss = standard_ops.reduce_sum(math_ops.pow(math_ops.abs(weigths), p))
       return standard_ops.multiply(my_scale, reg_loss, name=name)
 
-return lp
+  return lp
