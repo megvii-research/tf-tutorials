@@ -26,7 +26,7 @@ Single image super resolution methods aims to recover a high resolution image fr
 1. Train your model for different sub-sampling ratio.  You may need to change the hyper-parameter of the baseline project, apply augmentation or change the model in order to obtain higher PSNR. **_Choose the best configuration and submit your code in q2.diff._**
 
  #### 2.2 Other instructions
-The training and testing datasets are available at [here](http://vllab.ucmerced.edu/wlai24/LapSRN/). The model in the baseline project is trained with Train91 and tested on Set14. You can add other training datasets(e.g. General100) and test your model with multiple testsets.
+The training and testing datasets are available at [here](http://vllab.ucmerced.edu/wlai24/LapSRN/) and [here](https://github.com/jbhuang0604/SelfExSR). The model in the baseline project is trained with Train91 and tested on Set14. You can add other training datasets(e.g. General100) and test your model with multiple testsets.
 
 ### 3. Demosaicing
 
