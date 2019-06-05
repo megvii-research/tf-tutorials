@@ -121,7 +121,7 @@ def main():
                         placeholders['is_training']: False,
                     }
                     restored_v = sess.run([restored],feed_dict = feed_dict)
-                    psnr_x = compare_psnr(image[0,:,:,::-1], restored_v[0][0, :, :, ::-1])
+                    psnr_x = compare_psnr(gt_image[0,:,:,::-1], restored_v[0][0, :, :, ::-1])
                     psnrs.append(psnr_x)
                 print('average psnr is {:2.2f} dB'.format(np.mean(psnrs)))
         print('Training is done, exit.')
