@@ -1,0 +1,64 @@
+diff -u 01-svhn/common.py 01-q4-regularization-svhn-p2/common.py
+--- 01-svhn/common.py	2019-08-25 11:16:09.724386067 +0800
++++ 01-q4-regularization-svhn-p2/common.py	2019-08-28 00:44:20.024340890 +0800
+@@ -12,7 +12,7 @@
+ 
+ class Config:
+     '''where to write all the logging information during training(includes saved models)'''
+-    log_dir = './train_log/baseline_exp_noextra'
++    log_dir = './train_log/q4_p2_regularization_exp_noextra'
+ 
+     '''where to write model snapshots to'''
+     log_model_dir = os.path.join(log_dir, 'models')
+Common subdirectories: 01-svhn/images and 01-q4-regularization-svhn-p2/images
+diff -u 01-svhn/model.py 01-q4-regularization-svhn-p2/model.py
+--- 01-svhn/model.py	2019-08-23 14:00:28.002255239 +0800
++++ 01-q4-regularization-svhn-p2/model.py	2019-08-28 00:39:29.020356730 +0800
+@@ -11,6 +11,7 @@
+ import tensorflow as tf
+ import tensorflow.contrib as tf_contrib
+ from common import config
++from regularizer import lp_regularizer
+ 
+ 
+ class Model():
+@@ -19,7 +20,9 @@
+         self.weight_init = tf_contrib.layers.variance_scaling_initializer(factor=1.0,
+                                 mode='FAN_IN', uniform=False)
+         self.bias_init = tf.zeros_initializer()
+-        self.reg = tf_contrib.layers.l2_regularizer(config.weight_decay)
++        # self.reg = tf_contrib.layers.l2_regularizer(config.weight_decay)
++        self.reg = lp_regularizer(config.weight_decay)
++
+ 
+     def _conv_layer(self, name, inp, kernel_shape, stride, padding='SAME',is_training=False):
+         with tf.variable_scope(name) as scope:
+Only in 01-q4-regularization-svhn-p2/: model_wrong.py
+Common subdirectories: 01-svhn/__pycache__ and 01-q4-regularization-svhn-p2/__pycache__
+diff -u 01-svhn/regularizer.py 01-q4-regularization-svhn-p2/regularizer.py
+--- 01-svhn/regularizer.py	2019-08-23 14:00:28.002255239 +0800
++++ 01-q4-regularization-svhn-p2/regularizer.py	2019-08-28 00:39:44.852355868 +0800
+@@ -38,7 +38,7 @@
+       my_scale = ops.convert_to_tensor(scale,
+                                        dtype=weights.dtype.base_dtype,
+                                        name='scale')
+-      reg_loss = standard_ops.reduce_sum(math_ops.pow(math_ops.abs(weigths), p))
++      reg_loss = standard_ops.reduce_sum(math_ops.pow(math_ops.abs(weights), p))
+       return standard_ops.multiply(my_scale, reg_loss, name=name)
+ 
+   return lp
+diff -u 01-svhn/train.py 01-q4-regularization-svhn-p2/train.py
+--- 01-svhn/train.py	2019-08-25 21:58:19.928288808 +0800
++++ 01-q4-regularization-svhn-p2/train.py	2019-08-28 00:39:29.021356730 +0800
+@@ -67,9 +67,8 @@
+                             tf.cast(tf.argmax(label_onehot, 1), dtype=tf.int32))
+     accuracy = tf.reduce_mean(tf.cast(correct_pred, tf.float32))
+     loss_reg = tf.add_n(tf.get_collection(tf.GraphKeys.REGULARIZATION_LOSSES))
+-    # loss = tf.losses.softmax_cross_entropy(label_onehot, logits) + loss_reg
+-    loss = -tf.reduce_sum(tf.cast(label_onehot, dtype=tf.float32)*tf.cast(tf.log(tf.clip_by_value(preds, 1e-10, 1.0)), dtype=tf.float32), axis=1)
+-    loss = tf.reduce_mean(loss) + loss_reg
++    loss = tf.losses.softmax_cross_entropy(label_onehot, logits) + loss_reg
++
+ 
+     ## train config
+     global_steps = tf.Variable(0, trainable=False)

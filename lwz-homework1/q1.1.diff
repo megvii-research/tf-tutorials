@@ -1,0 +1,10 @@
+--- 01-svhn/train.py	2019-08-25 21:58:19.928288808 +0800
++++ 01-svhn-abs-softmax/train.py	2019-08-25 18:34:23.904954833 +0800
+@@ -68,6 +68,7 @@
+     accuracy = tf.reduce_mean(tf.cast(correct_pred, tf.float32))
+     loss_reg = tf.add_n(tf.get_collection(tf.GraphKeys.REGULARIZATION_LOSSES))
+     # loss = tf.losses.softmax_cross_entropy(label_onehot, logits) + loss_reg
++    # loss = -tf.reduce_sum(label_onehot*tf.log(preds), axis=1)
+     loss = -tf.reduce_sum(tf.cast(label_onehot, dtype=tf.float32)*tf.cast(tf.log(tf.clip_by_value(preds, 1e-10, 1.0)), dtype=tf.float32), axis=1)
+     loss = tf.reduce_mean(loss) + loss_reg
+ 

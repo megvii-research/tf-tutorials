@@ -1,0 +1,26 @@
+diff -u 01-svhn/common.py 01-q4.2-minus_reg_svhn/common.py
+--- 01-svhn/common.py	2019-08-25 11:16:09.724386067 +0800
++++ 01-q4.2-minus_reg_svhn/common.py	2019-08-27 22:29:35.943780919 +0800
+@@ -12,7 +12,7 @@
+ 
+ class Config:
+     '''where to write all the logging information during training(includes saved models)'''
+-    log_dir = './train_log/baseline_exp_noextra'
++    log_dir = './train_log/q4.2_minus_reg2_exp_noextra'
+ 
+     '''where to write model snapshots to'''
+     log_model_dir = os.path.join(log_dir, 'models')
+Common subdirectories: 01-svhn/images and 01-q4.2-minus_reg_svhn/images
+Common subdirectories: 01-svhn/__pycache__ and 01-q4.2-minus_reg_svhn/__pycache__
+diff -u 01-svhn/train.py 01-q4.2-minus_reg_svhn/train.py
+--- 01-svhn/train.py	2019-08-25 21:58:19.928288808 +0800
++++ 01-q4.2-minus_reg_svhn/train.py	2019-08-27 22:29:17.162781942 +0800
+@@ -69,7 +69,7 @@
+     loss_reg = tf.add_n(tf.get_collection(tf.GraphKeys.REGULARIZATION_LOSSES))
+     # loss = tf.losses.softmax_cross_entropy(label_onehot, logits) + loss_reg
+     loss = -tf.reduce_sum(tf.cast(label_onehot, dtype=tf.float32)*tf.cast(tf.log(tf.clip_by_value(preds, 1e-10, 1.0)), dtype=tf.float32), axis=1)
+-    loss = tf.reduce_mean(loss) + loss_reg
++    loss = tf.reduce_mean(loss) - loss_reg
+ 
+     ## train config
+     global_steps = tf.Variable(0, trainable=False)

@@ -1,0 +1,10 @@
+--- 01-svhn/train.py	2019-08-25 21:58:19.928288808 +0800
++++ 01-svhn-non-negative-max/train.py	2019-08-25 18:19:06.651004761 +0800
+@@ -70,7 +70,6 @@
+     # loss = tf.losses.softmax_cross_entropy(label_onehot, logits) + loss_reg
+     loss = -tf.reduce_sum(tf.cast(label_onehot, dtype=tf.float32)*tf.cast(tf.log(tf.clip_by_value(preds, 1e-10, 1.0)), dtype=tf.float32), axis=1)
+     loss = tf.reduce_mean(loss) + loss_reg
+-
+     ## train config
+     global_steps = tf.Variable(0, trainable=False)
+     boundaries = [train_set.minibatchs_per_epoch*15, train_set.minibatchs_per_epoch*40]

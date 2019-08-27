@@ -1,0 +1,130 @@
+diff -u 01-svhn/common.py 01-q3-Lp-polling-svhn/common.py
+--- 01-svhn/common.py	2019-08-25 11:16:09.724386067 +0800
++++ 01-q3-Lp-polling-svhn/common.py	2019-08-26 01:13:02.594652902 +0800
+@@ -12,7 +12,7 @@
+ 
+ class Config:
+     '''where to write all the logging information during training(includes saved models)'''
+-    log_dir = './train_log/baseline_exp_noextra'
++    log_dir = './train_log/q3_lp-pooling_exp_noextra'
+ 
+     '''where to write model snapshots to'''
+     log_model_dir = os.path.join(log_dir, 'models')
+Common subdirectories: 01-svhn/images and 01-q3-Lp-polling-svhn/images
+Only in 01-q3-Lp-polling-svhn/: model_old1.py
+diff -u 01-svhn/model.py 01-q3-Lp-polling-svhn/model.py
+--- 01-svhn/model.py	2019-08-23 14:00:28.002255239 +0800
++++ 01-q3-Lp-polling-svhn/model.py	2019-08-27 21:49:58.866910307 +0800
+@@ -11,6 +11,8 @@
+ import tensorflow as tf
+ import tensorflow.contrib as tf_contrib
+ from common import config
++from regularizer import lp_regularizer
++import numpy as np
+ 
+ 
+ class Model():
+@@ -20,6 +22,8 @@
+                                 mode='FAN_IN', uniform=False)
+         self.bias_init = tf.zeros_initializer()
+         self.reg = tf_contrib.layers.l2_regularizer(config.weight_decay)
++        # self.reg = lp_regularizer(1, p=2, scope=None)
++
+ 
+     def _conv_layer(self, name, inp, kernel_shape, stride, padding='SAME',is_training=False):
+         with tf.variable_scope(name) as scope:
+@@ -33,15 +37,40 @@
+             x = tf.layers.batch_normalization(x, axis=3, training=is_training)
+             x = tf.nn.relu(x)
+         return x
++    
++    def gaussian_kernel(self, size=5,sigma=2, c_num=1):
++        '''
++        size: int,一般取为奇数
++        sigma: blur factor
++        
++        return: (normalized) Gaussian kernel，大小 size*size
++        '''
++        x_points = np.arange(-(size-1)//2,(size-1)//2+1,1)
++        y_points = x_points[::-1]
++        xs,ys = np.meshgrid(x_points,y_points)
++        kernel = np.exp(-(xs**2+ys**2)/(2*sigma**2))/(2*np.pi*sig01 -ma**2)
++        return kernel/kernel.sum()/c_num
+ 
+     def _pool_layer(self, name, inp, ksize, stride, padding='SAME', mode='MAX'):
+-        assert mode in ['MAX', 'AVG'], 'the mode of pool must be MAX or AVG'
++        assert mode in ['MAX', 'AVG', 'LP2'], 'the mode of pool must be MAX or AVG'
+         if mode == 'MAX':
+             x = tf.nn.max_pool(inp, ksize=[1, ksize, ksize, 1], strides=[1, stride, stride, 1],
+                                padding=padding, name=name, data_format='NHWC')
+         elif mode == 'AVG':
+             x = tf.nn.avg_pool(inp, ksize=[1, ksize, ksize, 1], strides=[1, stride, stride, 1],
+                                padding=padding, name=name, data_format='NHWC')
++        elif mode == 'LP2':
++            c_num = inp.shape[-1].value
++            inp_square = tf.square(inp)
++            kernel = self.gaussian_kernel(ksize, sigma=2, c_num=c_num)
++            kernel = kernel[:, :, np.newaxis, np.newaxis]
++            kernel = tf.tile(kernel,multiples=[1, 1, c_num, c_num])
++            kernel = tf.cast(kernel, dtype=tf.float32)
++            kernel = tf.Variable(kernel, trainable=False)
++            print("kernel.shape:",kernel.shape, kernel)
++            
++            gaussian_inp = tf.nn.conv2d(inp_square, kernel, strides=[1, stride, stride, 1], padding=padding)
++            x = tf.sqrt(gaussian_inp)
+         return x
+ 
+     def _fc_layer(self, name, inp, units, dropout=0.5):
+@@ -74,28 +103,28 @@
+         x = self._conv_layer(name='conv1', inp=data,
+                              kernel_shape=[3, 3, config.nr_channel, 16], stride=1,
+                              is_training=is_training) # Nx32x32x32
+-        x = self._pool_layer(name='pool1', inp=x, ksize=2, stride=2, mode='MAX') # Nx16x16x16
++        x = self._pool_layer(name='pool1', inp=x, ksize=3, stride=3, mode='LP2') # Nx16x16x16
+ 
+         # conv2
+         x = self._conv_layer(name='conv21', inp=x, kernel_shape=[3, 3, 16, 32],
+                              stride=1, is_training=is_training)
+         x = self._conv_layer(name='conv22', inp=x, kernel_shape=[3, 3, 32, 32],
+                              stride=1, is_training=is_training)
+-        x = self._pool_layer(name='pool2', inp=x, ksize=2, stride=2, mode='MAX') # Nx8x8x32
++        x = self._pool_layer(name='pool2', inp=x, ksize=3, stride=3, mode='LP2') # Nx8x8x32
+ 
+         # conv3
+         x = self._conv_layer(name='conv31', inp=x, kernel_shape=[3, 3, 32, 64],
+                              stride=1, is_training=is_training)
+         x = self._conv_layer(name='conv32', inp=x, kernel_shape=[3, 3, 64, 64],
+                              stride=1, is_training=is_training)
+-        x = self._pool_layer(name='pool3', inp=x, ksize=2, stride=2, mode='MAX') # Nx4x4x64
++        x = self._pool_layer(name='pool3', inp=x, ksize=3, stride=3, mode='LP2') # Nx4x4x64
+ 
+         # conv4
+         x = self._conv_layer(name='conv41', inp=x, kernel_shape=[3, 3, 64, 128],
+                              stride=1, is_training=is_training)
+         x = self._conv_layer(name='conv42', inp=x, kernel_shape=[3, 3, 128, 128],
+                              stride=1, is_training=is_training)
+-        x = self._pool_layer(name='pool4', inp=x, ksize=4, stride=4, mode='AVG') # Nx1x1x128
++        x = self._pool_layer(name='pool4', inp=x, ksize=3, stride=3, mode='LP2') # Nx1x1x128
+ 
+         # fc1
+         logits = self._fc_layer(name='fc1', inp=x, units=config.nr_class, dropout=0)
+Common subdirectories: 01-svhn/__pycache__ and 01-q3-Lp-polling-svhn/__pycache__
+diff -u 01-svhn/train.py 01-q3-Lp-polling-svhn/train.py
+--- 01-svhn/train.py	2019-08-25 21:58:19.928288808 +0800
++++ 01-q3-Lp-polling-svhn/train.py	2019-08-27 21:10:09.377040371 +0800
+@@ -68,13 +68,11 @@
+     accuracy = tf.reduce_mean(tf.cast(correct_pred, tf.float32))
+     loss_reg = tf.add_n(tf.get_collection(tf.GraphKeys.REGULARIZATION_LOSSES))
+     # loss = tf.losses.softmax_cross_entropy(label_onehot, logits) + loss_reg
+-    loss = -tf.reduce_sum(tf.cast(label_onehot, dtype=tf.float32)*tf.cast(tf.log(tf.clip_by_value(preds, 1e-10, 1.0)), dtype=tf.float32), axis=1)
+-    loss = tf.reduce_mean(loss) + loss_reg
+-
++    loss = tf.losses.softmax_cross_entropy(label_onehot, logits)
+     ## train config
+     global_steps = tf.Variable(0, trainable=False)
+     boundaries = [train_set.minibatchs_per_epoch*15, train_set.minibatchs_per_epoch*40]
+-    values = [0.01, 0.001, 0.0005]
++    values = [0.00001, 0.00001, 0.000005]
+     lr = tf.train.piecewise_constant(global_steps, boundaries, values)
+     #opt = tf.train.MomentumOptimizer(lr, momentum=0.9) # set optimizer
+     opt = tf.train.AdamOptimizer(lr)
