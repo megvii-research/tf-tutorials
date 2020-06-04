@@ -41,6 +41,6 @@ You may need to change the hyper-parameter of the baseline project, apply augmen
 
  #### 3.2 Other instructions
 The training dataset for sRGB is available at [here](https://www.cmlab.csie.ntu.edu.tw/project/Deep-Demosaic/).
-The testing dataset for sRGB is available at [here](http://inf.ufrgs.br/~bhenz/datasets.zip).
+The testing dataset for sRGB is available at [here](https://pan.baidu.com/s/14z4uS7zzVi4OlKWVizi10w)(verification code:adb3).
 The training and testing datasets for linear space are available at [here](https://www.microsoft.com/en-us/download/details.aspx?id=52535).
 You may use the images in the training and testing lists of the bayer_panasonic folder for training , and test your model with the images in the validation list of the bayer_panasonic folder and all the images in the bayer_canon folder.
