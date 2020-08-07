@@ -105,4 +105,4 @@ class Model():
             'label': label,
             'is_training': is_training,
         }
-        return placeholders, label_onehot, logits
+        return placeholders, label, label_onehot, logits
