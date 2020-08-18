@@ -3,10 +3,10 @@
 ### Goals
  * Learn the basic principle of generating adversarial examples.
 ### Background
-By adding small perturbations to an image, we can force a wrong classification of a trained neural network. The problem is formulated as, finding <a href="https://www.codecogs.com/eqnedit.php?latex=\widehat{x}" target="_blank"><img src="https://latex.codecogs.com/gif.latex?\widehat{x}" title="\widehat{x}" /></a>
-s.t. <a href="https://www.codecogs.com/eqnedit.php?latex=D(x,&space;\widehat{x})&space;\leq&space;\epsilon" target="_blank"><img src="https://latex.codecogs.com/gif.latex?D(x,&space;\widehat{x})&space;\leq&space;\epsilon" title="D(x, \widehat{x}) \leq \epsilon" /></a>, 
-and <a href="https://www.codecogs.com/eqnedit.php?latex=$argmax_{j}P(y_j|\hat{x},&space;\theta)&space;\neq&space;y_{true}$" target="_blank"><img src="https://latex.codecogs.com/gif.latex?$argmax_{j}P(y_j|\hat{x},&space;\theta)&space;\neq&space;y_{true}$" title="$argmax_{j}P(y_j|\hat{x}, \theta) \neq y_{true}$" /></a> (untargeted),
-or <a href="https://www.codecogs.com/eqnedit.php?latex=argmax_{j}P(y_j|\hat{x},&space;\theta)&space;=&space;y_{target}" target="_blank"><img src="https://latex.codecogs.com/gif.latex?argmax_{j}P(y_j|\hat{x},&space;\theta)&space;=&space;y_{target}" title="argmax_{j}P(y_j|\hat{x}, \theta) = y_{target}" /></a>(targeted), where <a href="https://www.codecogs.com/eqnedit.php?latex=P(y|x,\theta)" target="_blank"><img src="https://latex.codecogs.com/gif.latex?P(y|x,\theta)" title="P(y|x,\theta)" /></a> is a classifier model parameterized by <a href="https://www.codecogs.com/eqnedit.php?latex=$\theta$" target="_blank"><img src="https://latex.codecogs.com/gif.latex?$\theta$" title="$\theta$" /></a> and <a href="https://www.codecogs.com/eqnedit.php?latex=$\epsilon$" target="_blank"><img src="https://latex.codecogs.com/gif.latex?$\epsilon$" title="$\epsilon$" /></a> is the maximum allowed noise. And <a href="https://www.codecogs.com/eqnedit.php?latex=\widehat{x}" target="_blank"><img src="https://latex.codecogs.com/gif.latex?\widehat{x}" title="\widehat{x}" /></a> is the generated adversarial examples.
+By adding small perturbations to an image, we can force a wrong classification of a trained neural network. The problem is formulated as, finding <img src="https://latex.codecogs.com/gif.latex?\widehat{x}" title="\widehat{x}" />
+s.t. <img src="https://latex.codecogs.com/gif.latex?D(x,&space;\widehat{x})&space;\leq&space;\epsilon" title="D(x, \widehat{x}) \leq \epsilon" />, 
+and <img src="https://latex.codecogs.com/gif.latex?argmax_{j}P(y_j|\hat{x},&space;\theta)&space;\neq&space;y_{true}" title="$argmax_{j}P(y_j|\hat{x}, \theta) \neq y_{true}$" /> (untargeted),
+or <img src="https://latex.codecogs.com/gif.latex?argmax_{j}P(y_j|\hat{x},&space;\theta)&space;=&space;y_{target}" title="argmax_{j}P(y_j|\hat{x}, \theta) = y_{target}" />(targeted), where <img src="https://latex.codecogs.com/gif.latex?P(y|x,\theta)" title="P(y|x,\theta)" /> is a classifier model parameterized by <img src="https://latex.codecogs.com/gif.latex?\theta" title="$\theta$" /> and <img src="https://latex.codecogs.com/gif.latex?\epsilon" title="$\epsilon$" /> is the maximum allowed noise. And <img src="https://latex.codecogs.com/gif.latex?\widehat{x}" title="\widehat{x}" /> is the generated adversarial examples.
 
 * In this experiment we target 100 images from [CIFAR-10 dataset](https://www.cs.toronto.edu/~kriz/cifar.html) and use a VGG-like model.
 * We evaluate the generated examples with perturbation scale and success rate, i.e. the  probability of generated adversarial examples being misclassified by the model.
@@ -22,7 +22,7 @@ or <a href="https://www.codecogs.com/eqnedit.php?latex=argmax_{j}P(y_j|\hat{x},&
      #### Submit your code in q2.1.diff
   - To obtain minimum distortion, add l2 loss between adversarial examples and the original images.
     You may construct your loss as，
-<a href="https://www.codecogs.com/eqnedit.php?latex=$L&space;=&space;crossentropyloss(preds,&space;gt)&space;&plus;&space;c(\widehat{x}&space;-&space;x)^2$" target="_blank"><img src="https://latex.codecogs.com/gif.latex?$L&space;=&space;crossentropyloss(preds,&space;gt)&space;&plus;&space;c(\widehat{x}&space;-&space;x)^2$" title="$L = crossentropyloss(preds, gt) + c(\widehat{x} - x)^2$" /></a>
+<img src="https://latex.codecogs.com/gif.latex?L&space;=&space;crossentropyloss(preds,&space;gt)&space;&plus;&space;c(\widehat{x}&space;-&space;x)^2" title="$L = crossentropyloss(preds, gt) + c(\widehat{x} - x)^2$" />
 Rerun the experiment to see how success rate changes with different c value, e.g. 1, 0.1, 0.01 etc.
     #### Choose one c value and submit your code in q2.2.diff
 - #### Q3: Whether augmentation helps defending adversarial attacks?
