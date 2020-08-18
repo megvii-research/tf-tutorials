@@ -18,13 +18,16 @@ or <img src="https://latex.codecogs.com/gif.latex?argmax_{j}P(y_j|\hat{x},&space
  Run the baseline code and record the perturbation scale and success rate.
 
 - #### Q2: Adding loss terms
-   - Adding averaged total variation loss(explained in Homework2) and see how the perturbation scale and success rate changes.
+  - Adding averaged total variation loss(explained in Homework2) and see how the perturbation scale and success rate changes.
      #### Submit your code in q2.1.diff
   - To obtain minimum distortion, add l2 loss between adversarial examples and the original images.
     You may construct your loss as，
-<img src="https://latex.codecogs.com/gif.latex?L&space;=&space;crossentropyloss(preds,&space;gt)&space;&plus;&space;c(\widehat{x}&space;-&space;x)^2" title="$L = crossentropyloss(preds, gt) + c(\widehat{x} - x)^2$" />
-Rerun the experiment to see how success rate changes with different c value, e.g. 1, 0.1, 0.01 etc.
-    #### Choose one c value and submit your code in q2.2.diff
+    
+    <img src="https://latex.codecogs.com/gif.latex?L&space;=&space;crossentropyloss(preds,&space;gt)&space;&plus;&space;c(\widehat{x}&space;-&space;x)^2" title="$L = crossentropyloss(preds, gt) + c(\widehat{x} - x)^2$" />
+    
+    Rerun the experiment to see how success rate changes with different c value, e.g. 1, 0.1, 0.01 etc.
+     #### Choose one c value and submit your code in q2.2.diff
+    
 - #### Q3: Whether augmentation helps defending adversarial attacks?
   - Implement one or some of the augmentation techniques, e.g. affine transformation, adding salt and pepper noise, [bluring](https://docs.opencv.org/3.1.0/d4/d13/tutorial_py_filtering.html) etc. on the generated adversarial examples. Evaluate the augmented adversarial examples and find out whether these examples still get misclassified.
     #### Pick up one augmentation or combination that helps and submit your code in q3.diff.
