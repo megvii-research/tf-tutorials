@@ -3,13 +3,13 @@
 - Learn the principle of [representation inverting](https://arxiv.org/abs/1412.0035), i.e. approximate an image with its feature extracted from deep neural networks.
 
 ## Backgrounds
-The representation inverting problem is formulated as finding an image $x$ whose representation, e.g. extracted features best match the one given.
+The representation inverting problem is formulated as finding an image <img src="https://latex.codecogs.com/gif.latex?x" title="$x$" /> whose representation, e.g. extracted features best match the one given.
 
-The representation inverting problem is formulated as finding an image whose representation, e.g. extracted features, best matches the given target， as <img src="https://latex.codecogs.com/gif.latex?$x&space;=&space;argmin_{x&space;\in&space;\mathbb{R}^{H&space;\times&space;W&space;\times&space;C}}L(\Phi(x)-\Phi_0)&space;&plus;&space;\lambda&space;R(x)$" title="$x = argmin_{x \in \mathbb{R}^{H \times W \times C}}L(\Phi(x)-\Phi_0) + \lambda R(x)$" />
-where the loss L compares the representation of image x and that of the target <img src="https://latex.codecogs.com/gif.latex?$\Phi_0$" title="$\Phi_0$" /> and R serves as the regularization term. 
+The representation inverting problem is formulated as finding an image whose representation, e.g. extracted features, best matches the given target， as <img src="https://latex.codecogs.com/gif.latex?x&space;=&space;argmin_{x&space;\in&space;\mathbb{R}^{H&space;\times&space;W&space;\times&space;C}}L(\Phi(x)-\Phi_0)&space;&plus;&space;\lambda&space;R(x)" title="$x = argmin_{x \in \mathbb{R}^{H \times W \times C}}L(\Phi(x)-\Phi_0) + \lambda R(x)$" />
+where the loss L compares the representation of image x and that of the target <img src="https://latex.codecogs.com/gif.latex?\Phi_0" title="$\Phi_0$" /> and R serves as the regularization term. 
 * In this experiment we generate the representation using a pretrained vgg16 model with batch normalization added after each convolution layer from the [onnx model zoo](https://github.com/onnx/models). 
 * We use L2 loss to compare the difference between representations.
-* During the training process, the image $x$ gets tuned and saved per 10 epochs. 
+* During the training process, the image <img src="https://latex.codecogs.com/gif.latex?x" title="$x$" /> gets tuned and saved per 10 epochs. 
 Check the stored images and find out how well this image approximates the target.
 
 
@@ -22,7 +22,7 @@ Check the stored images and find out how well this image approximates the target
   **_Submit your code in q1.diff._**
    
 - #### Q2: How regularization term helps?
-   - Total variation is defined as <img src="https://latex.codecogs.com/gif.latex?$&space;\sum\nolimits_{i,j}&space;(y_{i&plus;1,j}-y_{i,j})^2&space;&plus;&space;(y_{i,j&plus;1}-y_{i,j})^2$" title="$ \sum\nolimits_{i,j} (y_{i+1,j}-y_{i,j})^2 + (y_{i,j+1}-y_{i,j})^2$" />
+   - Total variation is defined as <img src="https://latex.codecogs.com/gif.latex?&space;\sum\nolimits_{i,j}&space;(y_{i&plus;1,j}-y_{i,j})^2&space;&plus;&space;(y_{i,j&plus;1}-y_{i,j})^2" title="$ \sum\nolimits_{i,j} (y_{i+1,j}-y_{i,j})^2 + (y_{i,j+1}-y_{i,j})^2$" />
     where i,j denotes row and column index of a pixel in the image.
 Total variation loss encourages images to be made up of piece-wise constant patches. 
 Add total variation loss in the loss term and compare the generated images with that in Q1. 
